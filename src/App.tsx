@@ -1,52 +1,23 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import Content from './components/Content'
+import Footer from './components/Footer'
+import Header from './components/Header'
+import LessonsList from './pages/LessonsList'
 
-function Header() {
-	const menuItems = [
-		{ label: 'Аккаунт', href: '/' },
-		{ label: 'Достижения', href: '/' },
-		{ label: 'Уроки', href: '/' },
-	]
-
+const App = () => {
 	return (
-		<header className="app-header">
-			<h3>🌱 Duolingo Clone</h3>
-			<nav>
-				{menuItems.map((item) => (
-					<a key={item.href} href={item.href}>
-						{item.label}
-					</a>
-				))}
-			</nav>
-		</header>
+		<BrowserRouter>
+			<div className="app-container">
+				<Header />
+				<Routes>
+					<Route path="/" element={<Content />} />
+					<Route path="/lessons" element={<LessonsList />} />
+				</Routes>
+				<Footer />
+			</div>
+		</BrowserRouter>
 	)
 }
 
-function Content() {
-	return (
-		<main className="app-content">
-			<h2>Добро пожаловать!</h2>
-			<p>Начни изучать языки с геймификацией и весёлыми заданиями 🎯</p>
-			<button>Начать обучение</button>
-		</main>
-	)
-}
-
-function Footer() {
-	return (
-		<footer className="app-footer">
-			<p>
-				© {new Date().getFullYear()} Duolingo Clone. Автор: <b>Андрей Крылов</b>
-			</p>
-		</footer>
-	)
-}
-
-export default function App() {
-	return (
-		<div className="app-container">
-			<Header />
-			<Content />
-			<Footer />
-		</div>
-	)
-}
+export default App
