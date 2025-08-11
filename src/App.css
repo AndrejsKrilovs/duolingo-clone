@@ -20,14 +20,16 @@
 }
 
 .app-header nav a {
-	margin-left: 1rem;
 	color: white;
-	font-weight: 500;
-	transition: color 0.3s ease;
+	padding: 0.5rem 0.75rem;
+	border-radius: 8px;
+	text-decoration: none;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.app-header nav a:hover {
-	color: #c8e6c9;
+.app-header nav a.active-link {
+	background-color: rgba(255, 255, 255, 0.25);
+	font-weight: bold;
 }
 
 .app-content {
@@ -46,4 +48,32 @@
 
 button {
 	margin-top: 1rem;
+}
+
+.nav-links {
+	display: flex;
+	gap: 0.5rem;
+	position: relative;
+}
+
+.nav-item {
+	position: relative;
+}
+
+.nav-link {
+	position: relative;
+	z-index: 2;
+	color: white;
+	padding: 0.5rem 0.75rem;
+	border-radius: 8px;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.active-indicator {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(255, 255, 255, 0.25);
+	border-radius: 8px;
+	z-index: 1;
 }

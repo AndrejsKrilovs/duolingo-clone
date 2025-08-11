@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import Content from './components/Content'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import LessonsList from './pages/LessonsList'
+import { routes } from './routes'
 
 const App = () => {
 	return (
@@ -11,8 +10,9 @@ const App = () => {
 			<div className="app-container">
 				<Header />
 				<Routes>
-					<Route path="/" element={<Content />} />
-					<Route path="/lessons" element={<LessonsList />} />
+					{routes.map((route) => (
+						<Route key={route.path} path={route.path} element={route.element} />
+					))}
 				</Routes>
 				<Footer />
 			</div>

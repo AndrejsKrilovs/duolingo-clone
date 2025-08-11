@@ -1,40 +1,51 @@
-import { useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { routes } from '../routes'
 
 const Header = () => {
-	const menuItems = [
-		{ label: 'Аккаунт', href: '/' },
-		{ label: 'Достижения', href: '/' },
-		{ label: 'Уроки', href: '/lessons' },
-	]
-
 	const navigate = useNavigate()
-	const handleStart = (
+	const location = useLocation()
+
+	const handleNavigation = (
 		event: React.MouseEvent<HTMLAnchorElement>,
 		href: string
 	) => {
 		event.preventDefault()
-
-		if (href === '/lessons') {
-			navigate('/lessons')
-		} else {
-			navigate('/')
-			alert('В данный момент функционал в разработке')
-		}
+		navigate(href)
 	}
 
 	return (
 		<header className="app-header">
 			<h3>🌱 Duolingo Clone</h3>
-			<nav>
-				{menuItems.map((item, id) => (
-					<a
-						key={item.href + id}
-						href={item.href}
-						onClick={(e) => handleStart(e, item.href)}
-					>
-						{item.label}
-					</a>
-				))}
+			<nav className="nav-links">
+				{routes.map((route) => {
+					const isActive = location.pathname === route.path
+
+					return (
+						<div key={route.path} className="nav-item">
+							<a
+								href={route.path}
+								onClick={(e) => handleNavigation(e, route.path)}
+								className="nav-link"
+							>
+								{route.label}
+							</a>
+
+							<AnimatePresence>
+								{isActive && (
+									<motion.div
+										className="active-indicator"
+										layoutId="activeIndicator"
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+									/>
+								)}
+							</AnimatePresence>
+						</div>
+					)
+				})}
 			</nav>
 		</header>
 	)
