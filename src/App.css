@@ -1,5 +1,5 @@
 #root {
-	max-width: 1280px;
+	width: 85%;
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
@@ -9,6 +9,16 @@
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+}
+
+@media (max-width: 640px) {
+	.app-header h3 {
+		display: none;
+	}
+
+	.app-header {
+		justify-content: center;
+	}
 }
 
 .app-header {
@@ -34,7 +44,7 @@
 
 .app-content {
 	flex: 1;
-	padding: 2rem;
+	padding: 1rem;
 	background-color: var(--background-color, #242424);
 	text-align: center;
 }
@@ -76,4 +86,64 @@ button {
 	background-color: rgba(255, 255, 255, 0.25);
 	border-radius: 8px;
 	z-index: 1;
+}
+
+.lessons-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 1rem;
+}
+
+.lesson-card {
+	background: #1b1b1b;
+	border-radius: 12px;
+	padding: 1rem;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+	text-align: center;
+}
+
+.lesson-icon {
+	font-size: 2.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.lesson-title {
+	font-size: 1.2rem;
+	margin: 0.25rem 0;
+	color: white;
+}
+
+.lesson-description {
+	font-size: 0.9rem;
+	color: #cfcfcf;
+	margin-bottom: 0.75rem;
+}
+
+.lesson-progress {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 6px;
+	height: 8px;
+	overflow: hidden;
+	margin-bottom: 1rem;
+}
+
+.lesson-progress-bar {
+	background: linear-gradient(90deg, #4caf50, #2e7d32);
+	height: 100%;
+	transition: width 0.3s ease;
+}
+
+.lesson-btn {
+	background: linear-gradient(180deg, #16a34a, #0f9d3a);
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	transition: transform 0.15s ease;
+}
+
+.lesson-btn:hover {
+	transform: translateY(-2px);
 }
