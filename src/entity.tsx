@@ -11,3 +11,7 @@ export interface LessonQuestion {
 	options: string[]
 	correctIndex: number
 }
+
+export interface LessonQuizProps {
+	language: string
+}

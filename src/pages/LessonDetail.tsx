@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom'
+import LessonQuiz from '../components/LessonQuiz'
 import { lessons } from '../mock-data'
 
 const LessonDetail = () => {
@@ -8,10 +9,8 @@ const LessonDetail = () => {
 
 	return (
 		<main className="app-content">
-			<div>
-				<h2>{lesson.title}</h2>
-				<p>{lesson.description}</p>
-			</div>
+			<h2>{lesson.title}</h2>
+			<LessonQuiz key={lesson.icon} language={lesson.icon} />
 		</main>
 	)
 }
