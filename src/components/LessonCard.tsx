@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import type Lesson from '../entity'
+import type { Lesson } from '../entity'
 
 const LessonCard = (props: Lesson) => {
 	return (
