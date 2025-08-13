@@ -147,3 +147,64 @@ button {
 .lesson-btn:hover {
 	transform: translateY(-2px);
 }
+
+.quiz-options {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	max-width: 400px;
+	margin: 1rem auto 0;
+}
+
+.quiz-options button {
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	border: none;
+	font-size: 1rem;
+	cursor: pointer;
+	background: #1b1b1b;
+	color: white;
+}
+
+.quiz-options button.correct {
+	background: #16a34a;
+}
+
+.quiz-options button.wrong {
+	background: #dc2626;
+}
+
+.result-card {
+	background: #1b1b1b;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.result-card h2 {
+	margin-bottom: 1rem;
+}
+
+.result-actions {
+	margin-top: 1.5rem;
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+}
+
+.result-actions button {
+	background: linear-gradient(180deg, #16a34a, #0f9d3a);
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	transition: transform 0.15s ease;
+}
+
+.result-actions button:hover {
+	transform: translateY(-2px);
+}
