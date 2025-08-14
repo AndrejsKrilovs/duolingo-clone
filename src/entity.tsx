@@ -15,3 +15,10 @@ export interface LessonQuestion {
 export interface LessonQuizProps {
 	language: string
 }
+
+export interface Achievement {
+	title: string
+	description: string
+	icon: string
+	progress: number
+}
