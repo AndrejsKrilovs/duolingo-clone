@@ -1,0 +1,17 @@
+# Общие системные файлы
+.idea/
+.vscode/
+*.log
+*.tmp
+
+# Gradle
+.gradle/
+build/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Тестовые данные
+*.h2.db
