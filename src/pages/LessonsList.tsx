@@ -1,9 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import LessonCard from '../components/LessonCard'
-import { lessons } from '../mock-data'
+import { lessons as defaultLessons } from '../data/mock-data'
+import type { Lesson } from '../entity'
+import { useLocalStorage } from '../useLocalStorage'
 
 const LessonsList = () => {
 	const navigate = useNavigate()
+	const [lessons] = useLocalStorage<Lesson[]>('lessons', defaultLessons)
+
 	const showLesson = (idx: number) => {
 		navigate(`/lessons/${idx}`)
 	}

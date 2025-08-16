@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { LessonQuestion, LessonQuizProps } from '../entity'
-import { lessonQuestions } from '../mock-data'
+import { lessons as defaultLessons, lessonQuestions } from '../data/mock-data'
+import type { Lesson, LessonQuestion, LessonQuizProps } from '../entity'
+import { useLocalStorage } from '../useLocalStorage'
 
 const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const navigate = useNavigate()
+	const [, setLessons] = useLocalStorage<Lesson[]>('lessons', defaultLessons)
 
 	const questions: LessonQuestion[] = useMemo(() => {
 		return language ? lessonQuestions[language] ?? [] : []
@@ -14,6 +16,19 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const [current, setCurrent] = useState(0)
 	const [score, setScore] = useState(0)
 	const [selected, setSelected] = useState<number | null>(null)
+	const [finished, setFinished] = useState(false)
+
+	useEffect(() => {
+		if (finished && language) {
+			const percent = Math.round((score / questions.length) * 100)
+
+			setLessons((prevLessons) =>
+				prevLessons.map((lesson) =>
+					lesson.icon === language ? { ...lesson, progress: percent } : lesson
+				)
+			)
+		}
+	}, [finished, language, score, questions.length, setLessons])
 
 	const renderEmptyState = (message: string) => (
 		<>
@@ -24,7 +39,6 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 
 	const renderResult = () => {
 		const percent = Math.round((score / questions.length) * 100)
-
 		return (
 			<motion.div
 				initial={{ scale: 0.8, opacity: 0 }}
@@ -42,6 +56,7 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 						onClick={() => {
 							setCurrent(0)
 							setScore(0)
+							setFinished(false) // сбросить флаг
 						}}
 					>
 						Пройти снова
@@ -59,14 +74,19 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 		}
 		setTimeout(() => {
 			setSelected(null)
-			setCurrent((prev) => prev + 1)
+			setCurrent((prev) => {
+				if (prev + 1 >= questions.length) {
+					setFinished(true)
+				}
+				return prev + 1
+			})
 		}, 800)
 	}
 
 	if (!language) return renderEmptyState('Урок не найден')
 	if (questions.length === 0)
 		return renderEmptyState('Для этого урока пока нет вопросов.')
-	if (current >= questions.length) return renderResult()
+	if (finished) return renderResult()
 
 	const currentQuestion = questions[current]
 

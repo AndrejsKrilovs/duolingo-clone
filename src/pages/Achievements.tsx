@@ -1,6 +1,13 @@
-import { achievements } from '../achievements'
+import { achievements as defaultAchievements } from '../data/achievements'
+import type { Achievement } from '../entity'
+import { useLocalStorage } from '../useLocalStorage'
 
 const Achievements = () => {
+	const [achievements] = useLocalStorage<Achievement[]>(
+		'achievements',
+		defaultAchievements
+	)
+
 	return (
 		<main className="app-content">
 			<h2>Достижения</h2>

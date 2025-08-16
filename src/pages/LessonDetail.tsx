@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import LessonQuiz from '../components/LessonQuiz'
-import { lessons } from '../mock-data'
+import { lessons } from '../data/mock-data'
 
 const LessonDetail = () => {
 	const { id } = useParams<{ id: string }>()
