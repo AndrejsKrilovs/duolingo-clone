@@ -1,4 +1,4 @@
-import type { Achievement } from './entity'
+import type { Achievement } from '../entity'
 
 export const achievements: Achievement[] = [
 	{
