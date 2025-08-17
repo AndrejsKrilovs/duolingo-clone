@@ -10,9 +10,16 @@ import type {
 	LessonQuizProps,
 } from '../entity'
 import { useLocalStorage } from '../useLocalStorage'
+import ConfettiBurst from './ConfettiBurst'
 
 const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const navigate = useNavigate()
+
+	const [score, setScore] = useState(0)
+	const [current, setCurrent] = useState(0)
+	const [finished, setFinished] = useState(false)
+	const [showConfetti, setShowConfetti] = useState(false)
+	const [selected, setSelected] = useState<number | null>(null)
 	const [, setLessons] = useLocalStorage<Lesson[]>('lessons', defaultLessons)
 	const [, setAchievements] = useLocalStorage<Achievement[]>(
 		'achievements',
@@ -22,11 +29,6 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const questions: LessonQuestion[] = useMemo(() => {
 		return language ? lessonQuestions[language] ?? [] : []
 	}, [language])
-
-	const [current, setCurrent] = useState(0)
-	const [score, setScore] = useState(0)
-	const [selected, setSelected] = useState<number | null>(null)
-	const [finished, setFinished] = useState(false)
 
 	const applyAchievementUpdates = (
 		prev: Achievement[],
@@ -88,6 +90,30 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 		}
 	}, [finished, score, questions.length, setAchievements])
 
+	const handleAnswer = (optionIndex: number) => {
+		setSelected(optionIndex)
+		if (optionIndex === questions[current].correctIndex) {
+			setScore((prev) => prev + 1)
+
+			setAchievements((prev) =>
+				applyAchievementUpdates(prev, { firstWord: true })
+			)
+
+			setShowConfetti(true)
+			setTimeout(() => setShowConfetti(false), 2000)
+		}
+
+		setTimeout(() => {
+			setSelected(null)
+			setCurrent((prev) => {
+				if (prev + 1 >= questions.length) {
+					setFinished(true)
+				}
+				return prev + 1
+			})
+		}, 800)
+	}
+
 	const renderEmptyState = (message: string) => (
 		<>
 			<p>{message}</p>
@@ -125,36 +151,15 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 		)
 	}
 
-	const handleAnswer = (optionIndex: number) => {
-		setSelected(optionIndex)
-		if (optionIndex === questions[current].correctIndex) {
-			setScore((prev) => prev + 1)
-
-			setAchievements((prev) =>
-				applyAchievementUpdates(prev, { firstWord: true })
-			)
-		}
-
-		setTimeout(() => {
-			setSelected(null)
-			setCurrent((prev) => {
-				if (prev + 1 >= questions.length) {
-					setFinished(true)
-				}
-				return prev + 1
-			})
-		}, 800)
-	}
-
 	if (!language) return renderEmptyState('Урок не найден')
 	if (questions.length === 0)
 		return renderEmptyState('Для этого урока пока нет вопросов.')
 	if (finished) return renderResult()
 
 	const currentQuestion = questions[current]
-
 	return (
 		<>
+			{showConfetti && <ConfettiBurst trigger={showConfetti} />}
 			<p>{currentQuestion.question}</p>
 			<div className="quiz-options">
 				{currentQuestion.options.map((option, idx) => (

@@ -208,3 +208,17 @@ button {
 .result-actions button:hover {
 	transform: translateY(-2px);
 }
+
+.confetti-container {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	pointer-events: none;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+}
+
+.confetti-particle {
+	position: absolute;
+	font-size: 24px;
+}
