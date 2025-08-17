@@ -1,4 +1,4 @@
-import type { Lesson } from '../entity'
+import type { Lesson, LessonQuestion } from '../entity'
 
 export const lessons: Lesson[] = [
 	{
