@@ -1,13 +1,23 @@
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { achievements as defaultAchievements } from '../data/achievements'
 import { lessons as defaultLessons, lessonQuestions } from '../data/mock-data'
-import type { Lesson, LessonQuestion, LessonQuizProps } from '../entity'
+import type {
+	Achievement,
+	Lesson,
+	LessonQuestion,
+	LessonQuizProps,
+} from '../entity'
 import { useLocalStorage } from '../useLocalStorage'
 
 const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const navigate = useNavigate()
 	const [, setLessons] = useLocalStorage<Lesson[]>('lessons', defaultLessons)
+	const [, setAchievements] = useLocalStorage<Achievement[]>(
+		'achievements',
+		defaultAchievements
+	)
 
 	const questions: LessonQuestion[] = useMemo(() => {
 		return language ? lessonQuestions[language] ?? [] : []
@@ -17,6 +27,42 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 	const [score, setScore] = useState(0)
 	const [selected, setSelected] = useState<number | null>(null)
 	const [finished, setFinished] = useState(false)
+
+	const applyAchievementUpdates = (
+		prev: Achievement[],
+		options: {
+			firstWord?: boolean
+			finished?: boolean
+			score?: number
+			total?: number
+		}
+	): Achievement[] => {
+		return prev.map((achieve) => {
+			if (
+				options.firstWord &&
+				achieve.title === 'Первое слово' &&
+				achieve.progress < 100
+			) {
+				return { ...achieve, progress: 100 }
+			}
+			if (
+				options.finished &&
+				achieve.title === 'Первый урок' &&
+				achieve.progress < 100
+			) {
+				return { ...achieve, progress: 100 }
+			}
+			if (
+				options.finished &&
+				achieve.title === 'Идеальный результат' &&
+				options.score === options.total &&
+				achieve.progress < 100
+			) {
+				return { ...achieve, progress: 100 }
+			}
+			return achieve
+		})
+	}
 
 	useEffect(() => {
 		if (finished && language) {
@@ -29,6 +75,18 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 			)
 		}
 	}, [finished, language, score, questions.length, setLessons])
+
+	useEffect(() => {
+		if (finished) {
+			setAchievements((prev) =>
+				applyAchievementUpdates(prev, {
+					finished: true,
+					score,
+					total: questions.length,
+				})
+			)
+		}
+	}, [finished, score, questions.length, setAchievements])
 
 	const renderEmptyState = (message: string) => (
 		<>
@@ -71,7 +129,12 @@ const LessonQuiz = ({ language }: LessonQuizProps) => {
 		setSelected(optionIndex)
 		if (optionIndex === questions[current].correctIndex) {
 			setScore((prev) => prev + 1)
+
+			setAchievements((prev) =>
+				applyAchievementUpdates(prev, { firstWord: true })
+			)
 		}
+
 		setTimeout(() => {
 			setSelected(null)
 			setCurrent((prev) => {
