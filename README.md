@@ -16,7 +16,6 @@
 
 ```bash
 git clone https://github.com/your-username/duolingo-clone.git
-cd duolingo-clone/frontend
 ```
 
 ### 2. Установить зависимости
