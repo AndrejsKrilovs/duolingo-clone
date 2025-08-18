@@ -15,7 +15,7 @@
 ### 1. Клонировать репозиторий
 
 ```bash
-git clone https://github.com/your-username/duolingo-clone.git
+git clone https://github.com/AndrejsKrilovs/duolingo-clone.git
 ```
 
 ### 2. Установить зависимости
